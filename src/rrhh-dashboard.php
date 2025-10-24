@@ -178,6 +178,12 @@
             border: 1px solid rgba(245, 241, 3, 0.2);
         }
 
+        .status-rejected {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.12), rgba(239, 68, 68, 0.08));
+            color: #DC2626;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
         .pulse-dot {
             width: 8px;
             height: 8px;
@@ -440,6 +446,61 @@
             transform: translateY(-50%);
             color: #6B7280;
         }
+        
+        /* Estilos para permisos */
+        .permission-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 0.25rem 0.75rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        
+        .permission-badge.vacation {
+            background-color: rgba(59, 130, 246, 0.1);
+            color: #1D4ED8;
+            border: 1px solid rgba(59, 130, 246, 0.2);
+        }
+        
+        .permission-badge.medical {
+            background-color: rgba(16, 185, 129, 0.1);
+            color: #047857;
+            border: 1px solid rgba(16, 185, 129, 0.2);
+        }
+        
+        .permission-badge.personal {
+            background-color: rgba(245, 158, 11, 0.1);
+            color: #B45309;
+            border: 1px solid rgba(245, 158, 11, 0.2);
+        }
+        
+        .permission-badge.emergency {
+            background-color: rgba(239, 68, 68, 0.1);
+            color: #B91C1C;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+        
+        /* Indicadores de prioridad */
+        .priority-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+        
+        .priority-high {
+            background-color: #EF4444;
+        }
+        
+        .priority-medium {
+            background-color: #F59E0B;
+        }
+        
+        .priority-low {
+            background-color: #10B981;
+        }
     </style>
 </head>
 <body class="min-h-screen overflow-x-hidden">
@@ -490,7 +551,7 @@
             <div class="flex space-x-8 mt-6">
                 <a href="#" class="nav-item active text-health-black font-medium py-2">Dashboard</a>
                 <a href="#" id="open-employees-modal" class="nav-item text-dark-gray hover:text-health-black font-medium py-2">Empleados</a>
-                <a href="#" class="nav-item text-dark-gray hover:text-health-black font-medium py-2">Permisos</a>
+                <a href="#" id="open-permissions-modal" class="nav-item text-dark-gray hover:text-health-black font-medium py-2">Permisos</a>
                 <a href="#" class="nav-item text-dark-gray hover:text-health-black font-medium py-2">Reportes</a>
                 <a href="#" class="nav-item text-dark-gray hover:text-health-black font-medium py-2">Políticas</a>
                 <a href="#" class="nav-item text-dark-gray hover:text-health-black font-medium py-2">Configuración</a>
@@ -1159,6 +1220,253 @@
         </div>
     </div>
 
+    <!-- Modal de Permisos -->
+    <div id="permissions-modal" class="modal-overlay">
+        <div class="modal-container">
+            <div class="modal-header">
+                <div>
+                    <h2 class="text-2xl font-heading font-bold text-health-black">Gestión de Permisos</h2>
+                    <p class="text-dark-gray mt-1">Administra y revisa las solicitudes de permisos de los empleados</p>
+                </div>
+                <button id="close-permissions-modal" class="modal-close">
+                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="modal-body">
+                <!-- Barra de búsqueda y filtros -->
+                <div class="flex flex-col md:flex-row gap-4 mb-6">
+                    <div class="search-box flex-1">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                        </svg>
+                        <input type="text" placeholder="Buscar permisos..." class="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-health-green focus:border-transparent">
+                    </div>
+                    
+                    <div class="flex gap-2">
+                        <select class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-health-green focus:border-transparent">
+                            <option value="">Todos los tipos</option>
+                            <option value="vacaciones">Vacaciones</option>
+                            <option value="medico">Permiso Médico</option>
+                            <option value="personal">Permiso Personal</option>
+                            <option value="emergencia">Emergencia</option>
+                        </select>
+                        
+                        <select class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-health-green focus:border-transparent">
+                            <option value="">Todos los estados</option>
+                            <option value="pendiente">Pendiente</option>
+                            <option value="aprobado">Aprobado</option>
+                            <option value="rechazado">Rechazado</option>
+                        </select>
+                        
+                        <input type="date" class="px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-health-green focus:border-transparent">
+                    </div>
+                </div>
+                
+                <!-- Estadísticas rápidas -->
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
+                    <div class="bg-health-green/10 p-4 rounded-lg border border-health-green/20">
+                        <p class="text-sm text-dark-gray">Total Solicitudes</p>
+                        <h3 class="text-2xl font-bold text-health-black">67</h3>
+                    </div>
+                    <div class="bg-health-yellow/10 p-4 rounded-lg border border-health-yellow/20">
+                        <p class="text-sm text-dark-gray">Pendientes</p>
+                        <h3 class="text-2xl font-bold text-health-black">23</h3>
+                    </div>
+                    <div class="bg-health-green/10 p-4 rounded-lg border border-health-green/20">
+                        <p class="text-sm text-dark-gray">Aprobados</p>
+                        <h3 class="text-2xl font-bold text-health-black">38</h3>
+                    </div>
+                    <div class="bg-red-100 p-4 rounded-lg border border-red-200">
+                        <p class="text-sm text-dark-gray">Rechazados</p>
+                        <h3 class="text-2xl font-bold text-health-black">6</h3>
+                    </div>
+                </div>
+                
+                <!-- Lista de permisos -->
+                <div class="overflow-x-auto scrollbar-custom">
+                    <table class="w-full">
+                        <thead>
+                            <tr class="border-b border-gray-200">
+                                <th class="text-left py-3 px-4 text-sm font-semibold text-dark-gray">Empleado</th>
+                                <th class="text-left py-3 px-4 text-sm font-semibold text-dark-gray">Tipo</th>
+                                <th class="text-left py-3 px-4 text-sm font-semibold text-dark-gray">Fecha Solicitud</th>
+                                <th class="text-left py-3 px-4 text-sm font-semibold text-dark-gray">Período</th>
+                                <th class="text-left py-3 px-4 text-sm font-semibold text-dark-gray">Estado</th>
+                                <th class="text-left py-3 px-4 text-sm font-semibold text-dark-gray">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-100">
+                            <tr class="hover:bg-gray-50 transition-colors duration-300">
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-health-green rounded-full flex items-center justify-center text-white font-medium text-sm mr-3">
+                                            CG
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-health-black">Carlos González</div>
+                                            <div class="text-sm text-dark-gray">Desarrollo</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <span class="permission-badge vacation">Vacaciones</span>
+                                </td>
+                                <td class="py-3 px-4 text-dark-gray">10 Jul 2024</td>
+                                <td class="py-3 px-4 text-dark-gray">15 - 25 Jul 2024</td>
+                                <td class="py-3 px-4">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium status-approved">
+                                        Aprobado
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div class="flex space-x-2">
+                                        <button class="text-health-green hover:text-health-green/80 font-medium text-sm icon-hover">
+                                            Ver
+                                        </button>
+                                        <button class="text-blue-500 hover:text-blue-700 font-medium text-sm icon-hover">
+                                            Editar
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors duration-300">
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-health-yellow rounded-full flex items-center justify-center text-white font-medium text-sm mr-3">
+                                            MP
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-health-black">María Pérez</div>
+                                            <div class="text-sm text-dark-gray">Marketing</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <span class="permission-badge medical">Médico</span>
+                                </td>
+                                <td class="py-3 px-4 text-dark-gray">05 Ago 2024</td>
+                                <td class="py-3 px-4 text-dark-gray">10 Ago 2024</td>
+                                <td class="py-3 px-4">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium status-pending">
+                                        <span class="priority-indicator priority-high"></span>
+                                        Pendiente
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div class="flex space-x-2">
+                                        <button class="text-health-green hover:text-health-green/80 font-medium text-sm icon-hover">
+                                            Aprobar
+                                        </button>
+                                        <button class="text-red-500 hover:text-red-700 font-medium text-sm icon-hover">
+                                            Rechazar
+                                        </button>
+                                        <button class="text-blue-500 hover:text-blue-700 font-medium text-sm icon-hover">
+                                            Ver
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors duration-300">
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-health-green rounded-full flex items-center justify-center text-white font-medium text-sm mr-3">
+                                            AL
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-health-black">Ana López</div>
+                                            <div class="text-sm text-dark-gray">Ventas</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <span class="permission-badge personal">Personal</span>
+                                </td>
+                                <td class="py-3 px-4 text-dark-gray">20 Jul 2024</td>
+                                <td class="py-3 px-4 text-dark-gray">05 - 12 Sep 2024</td>
+                                <td class="py-3 px-4">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium status-approved">
+                                        Aprobado
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div class="flex space-x-2">
+                                        <button class="text-health-green hover:text-health-green/80 font-medium text-sm icon-hover">
+                                            Ver
+                                        </button>
+                                        <button class="text-blue-500 hover:text-blue-700 font-medium text-sm icon-hover">
+                                            Editar
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr class="hover:bg-gray-50 transition-colors duration-300">
+                                <td class="py-3 px-4">
+                                    <div class="flex items-center">
+                                        <div class="w-8 h-8 bg-health-yellow rounded-full flex items-center justify-center text-white font-medium text-sm mr-3">
+                                            RM
+                                        </div>
+                                        <div>
+                                            <div class="font-medium text-health-black">Roberto Martínez</div>
+                                            <div class="text-sm text-dark-gray">Operaciones</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <span class="permission-badge emergency">Emergencia</span>
+                                </td>
+                                <td class="py-3 px-4 text-dark-gray">15 Ago 2024</td>
+                                <td class="py-3 px-4 text-dark-gray">22 Ago 2024</td>
+                                <td class="py-3 px-4">
+                                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium status-pending">
+                                        <span class="priority-indicator priority-medium"></span>
+                                        Pendiente
+                                    </span>
+                                </td>
+                                <td class="py-3 px-4">
+                                    <div class="flex space-x-2">
+                                        <button class="text-health-green hover:text-health-green/80 font-medium text-sm icon-hover">
+                                            Aprobar
+                                        </button>
+                                        <button class="text-red-500 hover:text-red-700 font-medium text-sm icon-hover">
+                                            Rechazar
+                                        </button>
+                                        <button class="text-blue-500 hover:text-blue-700 font-medium text-sm icon-hover">
+                                            Ver
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                
+                <!-- Botones de acción -->
+                <div class="flex justify-between items-center mt-6 pt-6 border-t border-gray-200">
+                    <div class="text-sm text-dark-gray">
+                        Mostrando 4 de 67 solicitudes
+                    </div>
+                    <div class="flex space-x-3">
+                        <button class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-300">
+                            Anterior
+                        </button>
+                        <button class="px-4 py-2 bg-white border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors duration-300">
+                            Siguiente
+                        </button>
+                        <button class="px-4 py-2 btn-primary text-white rounded-lg transition-all duration-300">
+                            <svg class="w-5 h-5 inline mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                            </svg>
+                            Nueva Solicitud
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
         // Inicialización de gráficos
         document.addEventListener('DOMContentLoaded', function() {
@@ -1329,14 +1637,14 @@
             const openEmployeesModal = document.getElementById('open-employees-modal');
             const closeEmployeesModal = document.getElementById('close-employees-modal');
 
-            // Abrir modal
+            // Abrir modal de empleados
             openEmployeesModal.addEventListener('click', function(e) {
                 e.preventDefault();
                 employeesModal.classList.add('active');
                 document.body.style.overflow = 'hidden';
             });
 
-            // Cerrar modal
+            // Cerrar modal de empleados
             closeEmployeesModal.addEventListener('click', function() {
                 employeesModal.classList.remove('active');
                 document.body.style.overflow = 'auto';
@@ -1350,13 +1658,99 @@
                 }
             });
 
-            // Cerrar modal con tecla Escape
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape' && employeesModal.classList.contains('active')) {
-                    employeesModal.classList.remove('active');
+            // Funcionalidad del modal de permisos
+            const permissionsModal = document.getElementById('permissions-modal');
+            const openPermissionsModal = document.getElementById('open-permissions-modal');
+            const closePermissionsModal = document.getElementById('close-permissions-modal');
+
+            // Abrir modal de permisos
+            openPermissionsModal.addEventListener('click', function(e) {
+                e.preventDefault();
+                permissionsModal.classList.add('active');
+                document.body.style.overflow = 'hidden';
+            });
+
+            // Cerrar modal de permisos
+            closePermissionsModal.addEventListener('click', function() {
+                permissionsModal.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            });
+
+            // Cerrar modal al hacer clic fuera del contenido
+            permissionsModal.addEventListener('click', function(e) {
+                if (e.target === permissionsModal) {
+                    permissionsModal.classList.remove('active');
                     document.body.style.overflow = 'auto';
                 }
             });
+
+            // Cerrar modales con tecla Escape
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                    if (employeesModal.classList.contains('active')) {
+                        employeesModal.classList.remove('active');
+                        document.body.style.overflow = 'auto';
+                    }
+                    if (permissionsModal.classList.contains('active')) {
+                        permissionsModal.classList.remove('active');
+                        document.body.style.overflow = 'auto';
+                    }
+                }
+            });
+
+            // Simulación de acciones en permisos
+            const approveButtons = document.querySelectorAll('button:contains("Aprobar")');
+            const rejectButtons = document.querySelectorAll('button:contains("Rechazar")');
+            
+            approveButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const statusCell = row.querySelector('.status-pending');
+                    if (statusCell) {
+                        statusCell.innerHTML = '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium status-approved">Aprobado</span>';
+                        
+                        // Mostrar notificación de éxito
+                        showNotification('Permiso aprobado correctamente', 'success');
+                    }
+                });
+            });
+            
+            rejectButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const row = this.closest('tr');
+                    const statusCell = row.querySelector('.status-pending');
+                    if (statusCell) {
+                        statusCell.innerHTML = '<span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium status-rejected">Rechazado</span>';
+                        
+                        // Mostrar notificación de éxito
+                        showNotification('Permiso rechazado correctamente', 'warning');
+                    }
+                });
+            });
+
+            // Función para mostrar notificaciones
+            function showNotification(message, type) {
+                const notification = document.createElement('div');
+                notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 transform transition-transform duration-300 ${
+                    type === 'success' ? 'bg-health-green text-white' : 'bg-health-yellow text-health-black'
+                }`;
+                notification.textContent = message;
+                
+                document.body.appendChild(notification);
+                
+                // Animación de entrada
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(0)';
+                }, 10);
+                
+                // Remover después de 3 segundos
+                setTimeout(() => {
+                    notification.style.transform = 'translateX(100%)';
+                    setTimeout(() => {
+                        document.body.removeChild(notification);
+                    }, 300);
+                }, 3000);
+            }
         });
     </script>
 </body>
