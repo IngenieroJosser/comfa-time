@@ -219,6 +219,9 @@
   .flex {
     display: flex;
   }
+  .table {
+    display: table;
+  }
   .h-\[90vh\] {
     height: 90vh;
   }
