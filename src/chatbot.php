@@ -582,7 +582,7 @@
                         ]
                     },
                     {
-                        message: '**Detalle por tipo de ausencia:**\n\n🏖️ Vacaciones ordinarias: 15 días\n🏥 Enfermedad: 10 días\n📋 Permisos personales: 5 días\n🎯 Días acumulados: 3 días\n\n¿Qué más te gustaría consultar?',
+                        message: 'Detalle por tipo de ausencia:\n\n🏖️ Vacaciones ordinarias: 15 días\n🏥 Enfermedad: 10 días\n📋 Permisos personales: 5 días\n🎯 Días acumulados: 3 días\n\n¿Qué más te gustaría consultar?',
                         options: [
                             { number: '1', text: 'Ver políticas de uso' },
                             { number: '2', text: 'Calcular días necesarios' },
@@ -606,7 +606,7 @@
                         ]
                     },
                     {
-                        message: '**Solicitudes Pendientes (1):**\n\n• #VAC-2024-0875: Permiso médico - 10 Ago 2024 (En revisión)\n\n**Solicitudes Aprobadas (3):**\n\n• #VAC-2024-0870: Vacaciones verano - 15-25 Jul 2024 ✅\n• #VAC-2024-0865: Permiso personal - 5 Jun 2024 ✅\n• #VAC-2024-0858: Vacaciones - 20-22 Mar 2024 ✅\n\n¿Qué acción te gustaría realizar?',
+                        message: 'Solicitudes Pendientes (1):\n\n• #VAC-2024-0875: Permiso médico - 10 Ago 2024 (En revisión)\n\nSolicitudes Aprobadas (3):\n\n• #VAC-2024-0870: Vacaciones verano - 15-25 Jul 2024 ✅\n• #VAC-2024-0865: Permiso personal - 5 Jun 2024 ✅\n• #VAC-2024-0858: Vacaciones - 20-22 Mar 2024 ✅\n\n¿Qué acción te gustaría realizar?',
                         options: [
                             { number: '1', text: 'Ver detalles de una solicitud' },
                             { number: '2', text: 'Solicitar seguimiento' },
@@ -630,7 +630,7 @@
                         ]
                     },
                     {
-                        message: '**Políticas de Días y Acumulación:**\n\n• 15 días de vacaciones anuales\n• Acumulación mensual proporcional (1.25 días/mes)\n• Máximo 30 días de acumulación\n• Los días no usados se pagan al final del año\n• Período de vacaciones: Enero - Diciembre\n\n¿Te interesa conocer otro aspecto de las políticas?',
+                        message: 'Políticas de Días y Acumulación:\n\n• 15 días de vacaciones anuales\n• Acumulación mensual proporcional (1.25 días/mes)\n• Máximo 30 días de acumulación\n• Los días no usados se pagan al final del año\n• Período de vacaciones: Enero - Diciembre\n\n¿Te interesa conocer otro aspecto de las políticas?',
                         options: [
                             { number: '1', text: 'Proceso de aprobación' },
                             { number: '2', text: 'Restricciones y condiciones' },
@@ -654,7 +654,7 @@
                         ]
                     },
                     {
-                        message: '**Información de Contacto RR.HH.:**\n\n📞 Línea directa: +57 1 234 5678\n📧 Email: rrhh@comfatime.com\n📍 Oficina: Piso 3, Edificio Principal\n🕒 Horario: Lunes a Viernes 8:00 - 17:00\n\nPara consultas urgentes fuera de horario, deja un mensaje y te contactaremos al siguiente día hábil.',
+                        message: 'Información de Contacto RR.HH.:\n\n📞 Línea directa: +57 1 234 5678\n📧 Email: rrhh@comfatime.com\n📍 Oficina: Piso 3, Edificio Principal\n🕒 Horario: Lunes a Viernes 8:00 - 17:00\n\nPara consultas urgentes fuera de horario, deja un mensaje y te contactaremos al siguiente día hábil.',
                         options: [
                             { number: '1', text: 'Solicitar cita' },
                             { number: '2', text: 'Enviar consulta' },
